@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Кликер · Автокликер с вкл/выкл</title>
+    <title>Кликер · Магазин · Анимация</title>
     <style>
         * {
             user-select: none;
@@ -20,19 +20,41 @@
             font-family: -apple-system, 'Segoe UI', 'Inter', system-ui, 'Roboto', sans-serif;
             margin: 0;
             padding: 12px;
+            opacity: 0;
+            animation: bodyFadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes bodyFadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         .game-container {
             max-width: 550px;
             width: 100%;
-            background: rgba(27, 38, 49, 0.88);
+            background: rgba(27, 38, 49, 0.92);
             backdrop-filter: blur(16px);
             border-radius: 48px;
             border: 1px solid rgba(255, 200, 100, 0.3);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.08);
             overflow: hidden;
+            transform: scale(0.95);
+            opacity: 0;
+            animation: containerPop 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1) 0.1s forwards;
         }
 
+        @keyframes containerPop {
+            0% {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Слайдер страниц */
         .pages-container {
             display: flex;
             transition: transform 0.35s cubic-bezier(0.2, 0.85, 0.4, 1);
@@ -44,6 +66,32 @@
             padding: 20px 16px 24px;
         }
 
+        /* Анимация для элементов на странице */
+        .stats-panel, .click-area, .auto-control, .nav-button, .reset-area, footer {
+            opacity: 0;
+            transform: translateY(15px);
+            animation: slideUpFade 0.4s ease-out forwards;
+        }
+
+        .stats-panel { animation-delay: 0.15s; }
+        .click-area { animation-delay: 0.25s; }
+        .auto-control { animation-delay: 0.35s; }
+        .nav-button { animation-delay: 0.45s; }
+        .reset-area { animation-delay: 0.55s; }
+        footer { animation-delay: 0.65s; }
+
+        @keyframes slideUpFade {
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Панель статистики */
         .stats-panel {
             background: #0a111ccc;
             border-radius: 60px;
@@ -86,6 +134,11 @@
             color: transparent;
             line-height: 1;
             font-family: monospace;
+            transition: transform 0.1s ease;
+        }
+
+        .score-value:active {
+            transform: scale(1.05);
         }
 
         .multiplier-badge {
@@ -111,6 +164,7 @@
             font-family: monospace;
         }
 
+        /* Кнопка клика */
         .click-area {
             display: flex;
             justify-content: center;
@@ -153,7 +207,7 @@
             margin-top: 6px;
         }
 
-        /* Блок управления автокликером */
+        /* Блок автокликера */
         .auto-control {
             background: #07121a;
             border-radius: 40px;
@@ -198,6 +252,7 @@
             color: #ffb0b0;
         }
 
+        /* Кнопка перехода в магазин */
         .nav-button {
             background: linear-gradient(135deg, #ffb347, #ff8c1a);
             border: none;
@@ -222,6 +277,7 @@
             transform: scale(0.97);
         }
 
+        /* Магазин */
         .shop-header {
             display: flex;
             align-items: center;
@@ -242,6 +298,7 @@
             justify-content: center;
             transition: 0.08s linear;
             color: #ffd5a4;
+            touch-action: manipulation;
         }
 
         .back-btn:active {
@@ -262,7 +319,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 400px;
+            max-height: 420px;
             overflow-y: auto;
             padding-right: 4px;
             -webkit-overflow-scrolling: touch;
@@ -282,9 +339,16 @@
             border-radius: 10px;
         }
 
+        /* Анимация появления товаров */
         @keyframes slideInItem {
-            0% { opacity: 0; transform: translateX(-20px); }
-            100% { opacity: 1; transform: translateX(0); }
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .shop-item {
@@ -301,6 +365,11 @@
             transition: background 0.1s;
             animation: slideInItem 0.3s ease forwards;
             opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .shop-item:hover {
+            background: #1a3342cc;
         }
 
         .item-info {
@@ -368,6 +437,7 @@
             box-shadow: 0 2px 0 #7a3e0c;
             transition: 0.03s linear;
             font-family: inherit;
+            touch-action: manipulation;
         }
 
         .buy-btn:active {
@@ -408,6 +478,7 @@
             font-size: 0.85rem;
             cursor: pointer;
             transition: 0.08s;
+            touch-action: manipulation;
         }
 
         .reset-btn:active {
@@ -422,6 +493,7 @@
             color: #8a9aa8;
         }
 
+        /* Всплывающие очки */
         .float-number {
             position: fixed;
             pointer-events: none;
@@ -456,12 +528,23 @@
             .mult-value {
                 font-size: 1.3rem;
             }
+            .shop-item {
+                padding: 8px 10px 8px 14px;
+            }
+            .item-name {
+                font-size: 0.85rem;
+            }
+            .buy-btn {
+                padding: 5px 12px;
+                font-size: 0.7rem;
+            }
         }
     </style>
 </head>
 <body>
 <div class="game-container">
     <div class="pages-container" id="pagesContainer">
+        <!-- СТРАНИЦА 1: КЛИКЕР -->
         <div class="page" id="pageClicker">
             <div class="stats-panel">
                 <div class="score-box">
@@ -496,6 +579,7 @@
             <footer>👆 Тапай по печеньке | 🤖 Вкл/Выкл автокликер | 🛒 Покупай улучшения</footer>
         </div>
 
+        <!-- СТРАНИЦА 2: МАГАЗИН -->
         <div class="page" id="pageShop">
             <div class="stats-panel">
                 <div class="score-box">
@@ -518,7 +602,7 @@
             <div class="reset-area">
                 <button class="reset-btn" id="resetGameBtn2">♻️ СБРОС</button>
             </div>
-            <footer>⭐ Каждый предмет максимум 50 раз</footer>
+            <footer>📦 Покупай улучшения | ⭐ Каждый предмет максимум 50 раз</footer>
         </div>
     </div>
 </div>
@@ -530,15 +614,15 @@
     let globalMultiplier = 1;     
     
     const MAX_ITEM_COUNT = 50;
-    let autoEnabled = true;       // Флаг включения автокликера
+    let autoEnabled = true;
     let autoInterval = null;
 
     const shopItems = [
         { id: "stronger_click", name: "💪 Мощный палец", desc: "+1 к силе клика", basePrice: 15, type: "power", value: 1, boughtCount: 0, priceScale: 1.25, maxCount: MAX_ITEM_COUNT },
         { id: "double_tap", name: "✨ Двойной удар", desc: "+2 к силе клика", basePrice: 45, type: "power", value: 2, boughtCount: 0, priceScale: 1.3, maxCount: MAX_ITEM_COUNT },
-        { id: "multiplier_upgrade", name: "🔮 Маг. кристалл", desc: "Множитель +0.5", basePrice: 80, type: "multiplier", value: 0.5, boughtCount: 0, priceScale: 1.4, maxCount: MAX_ITEM_COUNT },
+        { id: "multiplier_upgrade", name: "🔮 Магический кристалл", desc: "Множитель +0.5", basePrice: 80, type: "multiplier", value: 0.5, boughtCount: 0, priceScale: 1.4, maxCount: MAX_ITEM_COUNT },
         { id: "mega_power", name: "⚡ Титан кликов", desc: "+5 к силе", basePrice: 140, type: "power", value: 5, boughtCount: 0, priceScale: 1.3, maxCount: MAX_ITEM_COUNT },
-        { id: "legend_multiplier", name: "🏆 Легенд. тотем", desc: "Множитель +1", basePrice: 300, type: "multiplier", value: 1.0, boughtCount: 0, priceScale: 1.45, maxCount: MAX_ITEM_COUNT },
+        { id: "legend_multiplier", name: "🏆 Легендарный тотем", desc: "Множитель +1", basePrice: 300, type: "multiplier", value: 1.0, boughtCount: 0, priceScale: 1.45, maxCount: MAX_ITEM_COUNT },
         { id: "auto_clicker", name: "🤖 Автокликер", desc: "+2 очка/сек (база)", basePrice: 50, type: "auto", value: 2, boughtCount: 0, priceScale: 1.35, maxCount: MAX_ITEM_COUNT }
     ];
 
@@ -572,7 +656,6 @@
         }
     }
 
-    // Обновление существующих элементов магазина (без перерисовки DOM)
     function updateShopUIOnly() {
         const items = document.querySelectorAll('.shop-item');
         for (let i = 0; i < items.length && i < shopItems.length; i++) {
@@ -654,15 +737,12 @@
         if (autoEnabled) {
             toggleAutoBtn.innerText = "⏸️ ВЫКЛ";
             toggleAutoBtn.classList.remove("off");
-            toggleAutoBtn.style.background = "linear-gradient(135deg, #2c5a2e, #1e3a20)";
         } else {
             toggleAutoBtn.innerText = "▶️ ВКЛ";
             toggleAutoBtn.classList.add("off");
-            toggleAutoBtn.style.background = "linear-gradient(135deg, #5a2c2c, #3a1e1e)";
         }
     }
 
-    // Запуск/остановка интервала автокликера
     function restartAutoTimer() {
         if (autoInterval) clearInterval(autoInterval);
         if (!autoEnabled) return;
@@ -702,6 +782,7 @@
         notif.innerText = `🤖 +${income}`;
         notif.style.left = "70%";
         notif.style.top = "12%";
+        notif.style.fontSize = "1rem";
         document.body.appendChild(notif);
         setTimeout(() => notif.remove(), 700);
     }
@@ -858,11 +939,13 @@
     }
 
     function resetGame() {
-        if (confirm("Сбросить весь прогресс?")) {
+        if (confirm("Сбросить весь прогресс? Очки и все улучшения будут удалены.")) {
             totalPoints = 0;
             clickPower = 1;
             autoEnabled = true;
-            shopItems.forEach(i => i.boughtCount = 0);
+            for (let item of shopItems) {
+                item.boughtCount = 0;
+            }
             recalcGlobalMultiplier();
             updateAutoUI();
             restartAutoTimer();
@@ -877,12 +960,13 @@
     }
 
     function saveGameToLocal() {
-        localStorage.setItem("clickerGameSave", JSON.stringify({
+        const saveData = {
             points: totalPoints,
             clickPower: clickPower,
             autoEnabled: autoEnabled,
-            shopItems: shopItems.map(i => ({ id: i.id, boughtCount: i.boughtCount }))
-        }));
+            shopItems: shopItems.map(item => ({ id: item.id, boughtCount: item.boughtCount }))
+        };
+        localStorage.setItem("clickerGameSave", JSON.stringify(saveData));
     }
 
     function loadGameFromLocal() {
@@ -894,9 +978,11 @@
             clickPower = data.clickPower || 1;
             autoEnabled = data.autoEnabled !== undefined ? data.autoEnabled : true;
             if (data.shopItems) {
-                for (let s of data.shopItems) {
-                    const target = shopItems.find(i => i.id === s.id);
-                    if (target && s.boughtCount <= target.maxCount) target.boughtCount = s.boughtCount;
+                for (let saved of data.shopItems) {
+                    const target = shopItems.find(i => i.id === saved.id);
+                    if (target && saved.boughtCount <= target.maxCount) {
+                        target.boughtCount = saved.boughtCount;
+                    }
                 }
             }
             recalcGlobalMultiplier();
@@ -907,7 +993,7 @@
         } catch(e) { return false; }
     }
 
-    function init() {
+    function initGame() {
         loadGameFromLocal();
         recalcGlobalMultiplier();
         updateAutoUI();
@@ -922,7 +1008,7 @@
         resetBtn2.addEventListener("click", resetGame);
     }
 
-    init();
+    initGame();
 </script>
 </body>
 </html>
