@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Кликер · Магазин · Анимация</title>
+    <title>Кликер · Телефон + ПК · Магазин</title>
     <style>
         * {
             user-select: none;
@@ -12,1003 +12,627 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0d1b2a 0%, #1b2d3f 100%);
+            background: linear-gradient(145deg, #0a0f1a 0%, #0f1824 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: -apple-system, 'Segoe UI', 'Inter', system-ui, 'Roboto', sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, 'Inter', sans-serif;
             margin: 0;
-            padding: 12px;
-            opacity: 0;
-            animation: bodyFadeIn 0.6s ease-out forwards;
-        }
-
-        @keyframes bodyFadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+            padding: 16px;
         }
 
         .game-container {
-            max-width: 550px;
+            max-width: 600px;
             width: 100%;
-            background: rgba(27, 38, 49, 0.92);
-            backdrop-filter: blur(16px);
+            background: rgba(15, 25, 35, 0.88);
+            backdrop-filter: blur(20px);
             border-radius: 48px;
-            border: 1px solid rgba(255, 200, 100, 0.3);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 215, 150, 0.25);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05);
             overflow: hidden;
-            transform: scale(0.95);
-            opacity: 0;
-            animation: containerPop 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1) 0.1s forwards;
+            transition: all 0.2s;
         }
 
-        @keyframes containerPop {
-            0% {
-                transform: scale(0.95);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* Слайдер страниц */
         .pages-container {
             display: flex;
-            transition: transform 0.35s cubic-bezier(0.2, 0.85, 0.4, 1);
-            will-change: transform;
+            transition: transform 0.3s cubic-bezier(0.2, 0.85, 0.4, 1);
         }
 
         .page {
             flex: 0 0 100%;
-            padding: 20px 16px 24px;
+            padding: 18px 14px 22px;
         }
 
-        /* Анимация для элементов на странице */
-        .stats-panel, .click-area, .auto-control, .nav-button, .reset-area, footer {
+        /* Анимация появления */
+        .stats-panel, .energy-panel, .click-area, .auto-control, .nav-button, .features-grid {
             opacity: 0;
-            transform: translateY(15px);
-            animation: slideUpFade 0.4s ease-out forwards;
+            transform: translateY(12px);
+            animation: slideUp 0.4s ease forwards;
         }
+        .stats-panel { animation-delay: 0.05s; }
+        .energy-panel { animation-delay: 0.1s; }
+        .click-area { animation-delay: 0.15s; }
+        .auto-control { animation-delay: 0.2s; }
+        .nav-button { animation-delay: 0.25s; }
+        .features-grid { animation-delay: 0.3s; }
 
-        .stats-panel { animation-delay: 0.15s; }
-        .click-area { animation-delay: 0.25s; }
-        .auto-control { animation-delay: 0.35s; }
-        .nav-button { animation-delay: 0.45s; }
-        .reset-area { animation-delay: 0.55s; }
-        footer { animation-delay: 0.65s; }
-
-        @keyframes slideUpFade {
-            0% {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
 
         /* Панель статистики */
         .stats-panel {
-            background: #0a111ccc;
-            border-radius: 60px;
-            padding: 10px 16px;
-            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 80px;
+            padding: 8px 16px;
+            margin-bottom: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            backdrop-filter: blur(8px);
-            border: 1px solid #ffd96650;
-            box-shadow: inset 0 1px 3px #00000030, 0 6px 16px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 200, 100, 0.4);
         }
-
         .score-box {
-            background: #010a14;
+            background: #00000066;
             border-radius: 50px;
-            padding: 6px 18px;
+            padding: 5px 16px;
             display: flex;
             align-items: baseline;
             gap: 8px;
-            box-shadow: inset 0 0 6px #ffdf9e, 0 3px 8px black;
             flex: 1;
             justify-content: center;
         }
+        .score-label { font-weight: 600; color: #ffda99; font-size: 0.85rem; }
+        .score-value { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #ffe6b3, #ffaa33); background-clip: text; -webkit-background-clip: text; color: transparent; font-family: monospace; }
+        .multiplier-badge { background: #1f1a0e; padding: 5px 16px; border-radius: 40px; }
+        .mult-value { font-size: 1.3rem; font-weight: 800; color: #ffd966; }
 
-        .score-label {
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            color: #ffcd7e;
-            font-size: 0.9rem;
-        }
-
-        .score-value {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff1b5, #ffc857);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            line-height: 1;
-            font-family: monospace;
-            transition: transform 0.1s ease;
-        }
-
-        .score-value:active {
-            transform: scale(1.05);
-        }
-
-        .multiplier-badge {
-            background: #2c1e0e;
-            padding: 5px 18px;
-            border-radius: 45px;
+        /* Энергия */
+        .energy-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 60px;
+            padding: 8px 14px;
+            margin-bottom: 14px;
             display: flex;
-            align-items: baseline;
-            gap: 6px;
-            font-weight: bold;
-            box-shadow: inset 0 0 3px #ffbd5a, 0 4px 12px black;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #44ffaa40;
         }
-
-        .mult-label {
-            color: #e8bc7e;
-            font-size: 0.75rem;
-        }
-
-        .mult-value {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #ffdd99;
-            font-family: monospace;
-        }
+        .energy-icon { font-size: 1.4rem; }
+        .energy-bar-container { flex: 1; height: 28px; background: #221c10; border-radius: 40px; overflow: hidden; }
+        .energy-bar { height: 100%; background: linear-gradient(90deg, #ffc107, #ff9800); border-radius: 40px; transition: width 0.2s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-weight: bold; font-size: 0.7rem; color: #221c00; }
+        .energy-text { font-weight: bold; color: #ffdd99; min-width: 65px; font-size: 0.75rem; }
+        .energy-timer { background: #1a331a; padding: 3px 10px; border-radius: 30px; font-size: 0.65rem; color: #aaffaa; }
 
         /* Кнопка клика */
-        .click-area {
-            display: flex;
-            justify-content: center;
-            margin: 12px 0 20px;
-        }
-
+        .click-area { display: flex; justify-content: center; margin: 8px 0 16px; }
         .clicker-button {
-            background: radial-gradient(circle at 35% 25%, #ffe6b3, #e09d32);
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 18px 28px rgba(0, 0, 0, 0.5), inset 0 -6px 0 #a35119, inset 0 3px 10px rgba(255,255,200,0.9);
-            transition: transform 0.06s cubic-bezier(0.2, 0.9, 0.4, 1.1), box-shadow 0.08s ease;
-            border: none;
-            touch-action: manipulation;
+            width: 180px; height: 180px; background: radial-gradient(circle at 35% 30%, #ffd89a, #e09d32);
+            border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 18px 24px rgba(0,0,0,0.5), inset 0 -6px 0 #a35119;
+            transition: 0.05s linear; border: none;
         }
+        .clicker-button:hover { transform: scale(1.02); }
+        .clicker-button:active { transform: scale(0.94); box-shadow: 0 8px 14px black, inset 0 -2px 0 #a35119; }
+        .clicker-button.disabled { opacity: 0.5; filter: grayscale(0.2); pointer-events: none; }
+        .click-icon { font-size: 3rem; }
+        .click-text { font-size: 1.2rem; font-weight: 800; background: linear-gradient(145deg, #442d18, #1f1407); background-clip: text; -webkit-background-clip: text; color: transparent; }
 
-        .clicker-button:active {
-            transform: scale(0.94);
-            box-shadow: 0 8px 18px black, inset 0 -2px 0 #a35119;
-        }
-
-        .click-icon {
-            font-size: 3.8rem;
-            filter: drop-shadow(3px 5px 8px rgba(0,0,0,0.4));
-        }
-
-        .click-text {
-            font-size: 1.4rem;
-            font-weight: 800;
-            background: linear-gradient(145deg, #44341d, #1f1407);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin-top: 6px;
-        }
-
-        /* Блок автокликера */
+        /* Автокликер */
         .auto-control {
-            background: #07121a;
-            border-radius: 40px;
-            padding: 10px 14px;
-            margin: 10px 0 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-            border: 1px solid #ffb34740;
+            background: rgba(0, 0, 0, 0.6); border-radius: 60px; padding: 8px 14px; margin: 8px 0 16px;
+            display: flex; align-items: center; justify-content: space-between;
         }
-
-        .auto-stats-text {
-            font-size: 0.75rem;
-            color: #ffc285;
-            font-weight: bold;
-            flex: 1;
-        }
-
+        .auto-stats-text { font-size: 0.7rem; color: #ffd9a5; font-weight: bold; }
         .toggle-auto-btn {
-            background: linear-gradient(135deg, #2c5a2e, #1e3a20);
-            border: none;
-            padding: 8px 18px;
-            border-radius: 40px;
-            font-weight: bold;
-            font-size: 0.75rem;
-            color: #d4ffb0;
-            cursor: pointer;
-            transition: 0.08s linear;
-            font-family: inherit;
-            touch-action: manipulation;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #2c6e2c, #1e4a1e); border: none; padding: 5px 16px; border-radius: 40px;
+            font-weight: bold; font-size: 0.7rem; color: white; cursor: pointer;
         }
+        .toggle-auto-btn.off { background: linear-gradient(135deg, #8b3a3a, #5e2a2a); color: #ffc0c0; }
 
-        .toggle-auto-btn:active {
-            transform: scale(0.96);
-        }
-
-        .toggle-auto-btn.off {
-            background: linear-gradient(135deg, #5a2c2c, #3a1e1e);
-            color: #ffb0b0;
-        }
-
-        /* Кнопка перехода в магазин */
+        /* Кнопка магазина — ПОДНЯТА ВВЕРХ (над функциями) */
         .nav-button {
-            background: linear-gradient(135deg, #ffb347, #ff8c1a);
-            border: none;
-            padding: 14px 20px;
-            border-radius: 60px;
-            font-weight: bold;
-            font-size: 1rem;
-            color: #1f1b10;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            transition: all 0.08s linear;
-            box-shadow: 0 5px 14px rgba(0,0,0,0.3);
-            font-family: inherit;
-            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffaa44, #e07c1a);
+            border: none; padding: 12px; border-radius: 60px; font-weight: bold; font-size: 0.95rem;
+            width: 100%; margin: 12px 0 14px;
+            cursor: pointer; transition: 0.05s;
         }
+        .nav-button:active { transform: scale(0.97); }
 
-        .nav-button:active {
-            transform: scale(0.97);
+        /* Сетка 9 функций */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 12px;
         }
+        .feature-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 28px;
+            padding: 10px 6px;
+            text-align: center;
+            border: 1px solid rgba(255, 200, 100, 0.3);
+            transition: 0.08s;
+            cursor: pointer;
+        }
+        .feature-card:hover { transform: translateY(-2px); background: rgba(0,0,0,0.7); }
+        .feature-card:active { transform: scale(0.97); }
+        .feature-icon { font-size: 1.6rem; display: block; }
+        .feature-name { font-size: 0.65rem; font-weight: bold; color: #ffdd99; margin-top: 4px; }
+        .feature-value { font-size: 0.6rem; color: #aaffaa; }
+        .feature-cooldown { font-size: 0.55rem; color: #ffaa66; margin-top: 3px; }
 
         /* Магазин */
-        .shop-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
+        .shop-header { display: flex; gap: 12px; margin-bottom: 16px; align-items: center; }
+        .back-btn { background: #2b2b2fcc; border: none; width: 44px; height: 44px; border-radius: 50%; font-size: 1.4rem; color: #ffd5a4; cursor: pointer; }
+        .back-btn:active { transform: scale(0.92); }
+        .shop-title { font-size: 1.1rem; font-weight: bold; color: #ffdd99; border-left: 4px solid #ffb347; padding-left: 12px; }
+        .items-grid { max-height: 460px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .shop-item { background: #0d1b24cc; border-radius: 50px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; border: 1px solid #e2b15b60; }
+        .item-info { flex: 2; min-width: 130px; }
+        .item-name { font-weight: bold; font-size: 0.85rem; color: #ffeaac; }
+        .item-desc { font-size: 0.6rem; color: #bbaa88; }
+        .limit-badge { background: #4a2a1a; padding: 2px 8px; border-radius: 25px; font-size: 0.55rem; }
+        .price-action { background: #02101980; padding: 3px 10px; border-radius: 40px; display: flex; gap: 6px; align-items: center; }
+        .price { font-weight: 800; color: #ffc285; font-size: 0.9rem; }
+        .buy-btn { background: #ffaa33; border: none; padding: 4px 12px; border-radius: 35px; font-weight: bold; font-size: 0.65rem; cursor: pointer; }
+        .buy-btn:active { transform: scale(0.95); }
 
-        .back-btn {
-            background: #2b2b2fcc;
-            border: none;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.08s linear;
-            color: #ffd5a4;
-            touch-action: manipulation;
-        }
+        .reset-area { display: flex; justify-content: center; margin-top: 12px; gap: 12px; flex-wrap: wrap; }
+        .reset-btn { background: #2b2b2faa; border: 1px solid #ffaa66; color: #ffd5a4; padding: 8px 20px; border-radius: 50px; font-weight: bold; font-size: 0.75rem; cursor: pointer; }
+        .reset-btn:active { transform: scale(0.96); }
+        .prestige-btn { background: #5a2a2aaa; border-color: #ff8866; }
 
-        .back-btn:active {
-            transform: scale(0.92);
-            background: #4c2c14;
-        }
+        footer { font-size: 0.55rem; text-align: center; margin-top: 14px; color: #aaa; }
 
-        .shop-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #ffda99;
-            flex: 1;
-            border-left: 5px solid #ffb347;
-            padding-left: 14px;
-        }
+        .float-number { position: fixed; pointer-events: none; font-weight: bold; font-size: 1rem; color: #ffdd77; text-shadow: 0 0 6px orange; z-index: 1000; animation: floatUp 0.5s ease-out forwards; }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0px) scale(0.7); } 100% { opacity: 0; transform: translateY(-50px) scale(1); } }
 
-        .items-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 420px;
-            overflow-y: auto;
-            padding-right: 4px;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .items-grid::-webkit-scrollbar {
-            width: 4px;
-        }
-        
-        .items-grid::-webkit-scrollbar-track {
-            background: #1e2a32;
-            border-radius: 10px;
-        }
-        
-        .items-grid::-webkit-scrollbar-thumb {
-            background: #ffb347;
-            border-radius: 10px;
-        }
-
-        /* Анимация появления товаров */
-        @keyframes slideInItem {
-            0% {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .shop-item {
-            background: #0d1b24cc;
-            backdrop-filter: blur(4px);
-            border-radius: 60px;
-            padding: 10px 14px 10px 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            border: 1px solid #e2b15b60;
-            transition: background 0.1s;
-            animation: slideInItem 0.3s ease forwards;
-            opacity: 0;
-            transform: translateX(-20px);
-        }
-
-        .shop-item:hover {
-            background: #1a3342cc;
-        }
-
-        .item-info {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            flex: 2;
-            min-width: 130px;
-        }
-
-        .item-name {
-            font-weight: bold;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #ffeaac;
-            flex-wrap: wrap;
-        }
-
-        .item-desc {
-            font-size: 0.65rem;
-            color: #bbaa88;
-            line-height: 1.3;
-        }
-
-        .limit-badge {
-            background: #4a2a1a;
-            padding: 2px 10px;
-            border-radius: 25px;
-            font-size: 0.6rem;
-            font-weight: bold;
-            color: #ffbc6e;
-        }
-
-        .price-action {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #02101980;
-            padding: 4px 8px 4px 14px;
-            border-radius: 50px;
-        }
-
-        .price {
-            font-weight: 800;
-            font-size: 1.1rem;
-            color: #ffc285;
-            white-space: nowrap;
-        }
-
-        .price small {
-            font-size: 0.6rem;
-        }
-
-        .buy-btn {
-            background: linear-gradient(to bottom, #ffbc6e, #e57c1e);
-            border: none;
-            font-weight: bold;
-            font-size: 0.8rem;
-            padding: 6px 16px;
-            border-radius: 40px;
-            color: #1f1b10;
-            cursor: pointer;
-            box-shadow: 0 2px 0 #7a3e0c;
-            transition: 0.03s linear;
-            font-family: inherit;
-            touch-action: manipulation;
-        }
-
-        .buy-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 0px 0 #7a3e0c;
-        }
-
-        .buy-btn.disabled-btn, .buy-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background: #6f5a42;
-            transform: none;
-        }
-        
-        .maxed-badge {
-            background: #2d2a1e;
-            color: #ffaa55;
-            font-weight: bold;
-            padding: 4px 14px;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            white-space: nowrap;
-        }
-
-        .reset-area {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .reset-btn {
-            background: #2b2b2fcc;
-            border: 1px solid #ffb765;
-            color: #ffd5a4;
-            padding: 10px 28px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: 0.08s;
-            touch-action: manipulation;
-        }
-
-        .reset-btn:active {
-            background: #4c2c14;
-            transform: scale(0.96);
-        }
-
-        footer {
-            font-size: 0.6rem;
-            text-align: center;
-            margin-top: 16px;
-            color: #8a9aa8;
-        }
-
-        /* Всплывающие очки */
-        .float-number {
-            position: fixed;
-            pointer-events: none;
-            font-weight: 800;
-            font-size: 1.4rem;
-            color: #ffdd77;
-            text-shadow: 0 0 8px #ff8800;
-            z-index: 1000;
-            animation: floatUp 0.6s ease-out forwards;
-        }
-
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0px) scale(0.7); }
-            70% { opacity: 0.9; transform: translateY(-40px) scale(1.1); }
-            100% { opacity: 0; transform: translateY(-70px) scale(0.9); }
+        /* Адаптация под ПК (мышь) */
+        @media (min-width: 768px) {
+            .game-container { max-width: 700px; }
+            .clicker-button { width: 220px; height: 220px; }
+            .click-icon { font-size: 3.8rem; }
+            .score-value { font-size: 2.2rem; }
+            .feature-card { padding: 12px 8px; }
+            .feature-icon { font-size: 1.9rem; }
+            .feature-name { font-size: 0.75rem; }
+            .nav-button { font-size: 1rem; padding: 14px; }
+            .reset-btn { padding: 8px 24px; font-size: 0.8rem; }
         }
 
         @media (max-width: 450px) {
-            .page {
-                padding: 16px 12px 20px;
-            }
-            .clicker-button {
-                width: 170px;
-                height: 170px;
-            }
-            .click-icon {
-                font-size: 3rem;
-            }
-            .score-value {
-                font-size: 1.7rem;
-            }
-            .mult-value {
-                font-size: 1.3rem;
-            }
-            .shop-item {
-                padding: 8px 10px 8px 14px;
-            }
-            .item-name {
-                font-size: 0.85rem;
-            }
-            .buy-btn {
-                padding: 5px 12px;
-                font-size: 0.7rem;
-            }
+            .clicker-button { width: 150px; height: 150px; }
+            .click-icon { font-size: 2.6rem; }
+            .score-value { font-size: 1.5rem; }
+            .feature-icon { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
 <div class="game-container">
     <div class="pages-container" id="pagesContainer">
-        <!-- СТРАНИЦА 1: КЛИКЕР -->
         <div class="page" id="pageClicker">
             <div class="stats-panel">
-                <div class="score-box">
-                    <span class="score-label">🍪 ОЧКИ</span>
-                    <span class="score-value" id="counterDisplay">0</span>
-                </div>
-                <div class="multiplier-badge">
-                    <span class="mult-label">⚡ ×</span>
-                    <span class="mult-value" id="multiplierDisplay">1</span>
-                </div>
+                <div class="score-box"><span class="score-label">🍪 ОЧКИ</span><span class="score-value" id="counterDisplay">0</span></div>
+                <div class="multiplier-badge"><span class="mult-value" id="multiplierDisplay">1</span></div>
             </div>
-
-            <div class="click-area">
-                <div class="clicker-button" id="clickerBtn">
-                    <div class="click-icon">✨🍪✨</div>
-                    <div class="click-text">КЛИК!</div>
-                </div>
+            <div class="energy-panel">
+                <span class="energy-icon">⚡</span>
+                <div class="energy-bar-container"><div class="energy-bar" id="energyBar">100</div></div>
+                <span class="energy-text" id="energyText">100/100</span>
+                <span class="energy-timer" id="energyTimer">+1/5c</span>
             </div>
-
-            <div class="auto-control">
-                <span class="auto-stats-text" id="autoStatsText">🤖 Автокликер: 0 шт. → 0 🍪/сек</span>
-                <button class="toggle-auto-btn" id="toggleAutoBtn">🔘 ВКЛ</button>
-            </div>
-
-            <button class="nav-button" id="openShopBtn">
-                🛒 ПЕРЕЙТИ В МАГАЗИН →
-            </button>
+            <div class="click-area"><div class="clicker-button" id="clickerBtn"><div class="click-icon">✨🍪✨</div><div class="click-text">КЛИК</div></div></div>
+            <div class="auto-control"><span class="auto-stats-text" id="autoStatsText">🤖 0 шт. → 0/сек</span><button class="toggle-auto-btn" id="toggleAutoBtn">🔘 ВКЛ</button></div>
+            
+            <!-- КНОПКА МАГАЗИНА — ВЫШЕ ФУНКЦИЙ -->
+            <button class="nav-button" id="openShopBtn">🛒 МАГАЗИН →</button>
+            
+            <!-- 9 ФУНКЦИЙ -->
+            <div class="features-grid" id="featuresGrid"></div>
 
             <div class="reset-area">
                 <button class="reset-btn" id="resetGameBtn">♻️ СБРОС</button>
+                <button class="reset-btn prestige-btn" id="prestigeBtn">🌟 ПРЕСТИЖ (+5%)</button>
             </div>
-            <footer>👆 Тапай по печеньке | 🤖 Вкл/Выкл автокликер | 🛒 Покупай улучшения</footer>
+            <footer>🎮 9 активных функций | ⚡ 1 клик = 1 энергия | ⭐ 11 улучшений</footer>
         </div>
 
-        <!-- СТРАНИЦА 2: МАГАЗИН -->
         <div class="page" id="pageShop">
-            <div class="stats-panel">
-                <div class="score-box">
-                    <span class="score-label">🍪 ОЧКИ</span>
-                    <span class="score-value" id="counterDisplay2">0</span>
-                </div>
-                <div class="multiplier-badge">
-                    <span class="mult-label">⚡ ×</span>
-                    <span class="mult-value" id="multiplierDisplay2">1</span>
-                </div>
-            </div>
-
-            <div class="shop-header">
-                <button class="back-btn" id="backToClickerBtn">←</button>
-                <div class="shop-title">🛒 МАГАЗИН (лимит 50)</div>
-            </div>
-
+            <div class="stats-panel"><div class="score-box"><span class="score-label">🍪</span><span class="score-value" id="counterDisplay2">0</span></div><div class="multiplier-badge"><span class="mult-value" id="multiplierDisplay2">1</span></div></div>
+            <div class="shop-header"><button class="back-btn" id="backToClickerBtn">←</button><div class="shop-title">МАГАЗИН (11 улучшений)</div></div>
             <div class="items-grid" id="shopContainer"></div>
-
-            <div class="reset-area">
-                <button class="reset-btn" id="resetGameBtn2">♻️ СБРОС</button>
-            </div>
-            <footer>📦 Покупай улучшения | ⭐ Каждый предмет максимум 50 раз</footer>
+            <footer>⭐ Криты, энергия, скорость автокликера, двойной доход и множитель</footer>
         </div>
     </div>
 </div>
 
 <script>
-    // ----- ИГРОВЫЕ ДАННЫЕ -----
-    let totalPoints = 0;          
-    let clickPower = 1;           
-    let globalMultiplier = 1;     
+    // ========== ИГРОВЫЕ ДАННЫЕ ==========
+    let totalPoints = 0, clickPower = 1, globalMultiplier = 1;
+    let currentEnergy = 100;
+    const BASE_MAX_ENERGY = 100;
+    let autoEnabled = true, autoInterval = null, energyRegenInterval = null;
+    let prestigeMultiplier = 1;
     
-    const MAX_ITEM_COUNT = 50;
-    let autoEnabled = true;
-    let autoInterval = null;
-
+    let criticalChance = 0, criticalDamage = 2, clickPowerMultiplier = 1, maxEnergyBonus = 0, autoCritEnabled = false, doubleChance = 0;
+    
+    let energyBoostAvailable = true, energyBoostCooldown = 0;
+    let instantBonusAvailable = true, instantBonusCooldown = 0;
+    let superClickAvailable = true, superClickCooldown = 0, superClickActive = false;
+    let regenBoostAvailable = true, regenBoostCooldown = 0, regenBoostActive = false;
+    let freezeAvailable = true, freezeCooldown = 0, freezeActive = false;
+    let autoBoostAvailable = true, autoBoostCooldown = 0, autoBoostActive = false;
+    let collectBonusAvailable = true, collectBonusCooldown = 0;
+    let themeIndex = 0;
+    const themes = ["🌙 Тёмная", "☀️ Светлая", "🪸 Коралловая", "💜 Фиолетовая"];
+    let comboCount = 0, lastClickTime = 0;
+    const COMBO_WINDOW = 2000;
+    
     const shopItems = [
-        { id: "stronger_click", name: "💪 Мощный палец", desc: "+1 к силе клика", basePrice: 15, type: "power", value: 1, boughtCount: 0, priceScale: 1.25, maxCount: MAX_ITEM_COUNT },
-        { id: "double_tap", name: "✨ Двойной удар", desc: "+2 к силе клика", basePrice: 45, type: "power", value: 2, boughtCount: 0, priceScale: 1.3, maxCount: MAX_ITEM_COUNT },
-        { id: "multiplier_upgrade", name: "🔮 Магический кристалл", desc: "Множитель +0.5", basePrice: 80, type: "multiplier", value: 0.5, boughtCount: 0, priceScale: 1.4, maxCount: MAX_ITEM_COUNT },
-        { id: "mega_power", name: "⚡ Титан кликов", desc: "+5 к силе", basePrice: 140, type: "power", value: 5, boughtCount: 0, priceScale: 1.3, maxCount: MAX_ITEM_COUNT },
-        { id: "legend_multiplier", name: "🏆 Легендарный тотем", desc: "Множитель +1", basePrice: 300, type: "multiplier", value: 1.0, boughtCount: 0, priceScale: 1.45, maxCount: MAX_ITEM_COUNT },
-        { id: "auto_clicker", name: "🤖 Автокликер", desc: "+2 очка/сек (база)", basePrice: 50, type: "auto", value: 2, boughtCount: 0, priceScale: 1.35, maxCount: MAX_ITEM_COUNT }
+        { id: "power", name: "💪 Сила клика", desc: "+1 к силе", basePrice: 20, type: "power", value: 1, boughtCount: 0, priceScale: 1.3, maxCount: 50 },
+        { id: "mult", name: "🔮 Множитель", desc: "+0.5 к множителю", basePrice: 100, type: "multiplier", value: 0.5, boughtCount: 0, priceScale: 1.4, maxCount: 30 },
+        { id: "auto", name: "🤖 Автокликер", desc: "+2 очка/сек", basePrice: 50, type: "auto", value: 2, boughtCount: 0, priceScale: 1.35, maxCount: 50 },
+        { id: "critical", name: "💥 Критический удар", desc: "+3% шанс крита (x2 урон)", basePrice: 80, type: "crit_chance", value: 3, boughtCount: 0, priceScale: 1.4, maxCount: 20 },
+        { id: "crit_damage", name: "⚔️ Сокрушитель", desc: "+0.3 к множителю крита", basePrice: 150, type: "crit_damage", value: 0.3, boughtCount: 0, priceScale: 1.5, maxCount: 15 },
+        { id: "energy_regen", name: "🌿 Энергоцветок", desc: "+10% к скорости регенерации", basePrice: 120, type: "regen_bonus", value: 10, boughtCount: 0, priceScale: 1.4, maxCount: 20 },
+        { id: "auto_speed", name: "⚡ Турбо-авто", desc: "+5% к скорости автокликера", basePrice: 200, type: "auto_speed", value: 0.05, boughtCount: 0, priceScale: 1.45, maxCount: 20 },
+        { id: "click_mult", name: "✨ Усилитель клика", desc: "+2% к силе клика", basePrice: 180, type: "click_mult", value: 0.02, boughtCount: 0, priceScale: 1.5, maxCount: 25 },
+        { id: "max_energy", name: "💎 Накопитель", desc: "+5 к макс. энергии", basePrice: 250, type: "max_energy", value: 5, boughtCount: 0, priceScale: 1.6, maxCount: 10 },
+        { id: "auto_crit", name: "🎯 Авто-мастер", desc: "Автокликер может критовать", basePrice: 300, type: "auto_crit", value: 1, boughtCount: 0, priceScale: 1.7, maxCount: 1 },
+        { id: "double_income", name: "🍀 Двойной доход", desc: "+4% шанс двойного дохода", basePrice: 220, type: "double_chance", value: 4, boughtCount: 0, priceScale: 1.55, maxCount: 15 }
     ];
-
-    // DOM
+    
     const pagesContainer = document.getElementById("pagesContainer");
-    const counterDisplay = document.getElementById("counterDisplay");
-    const counterDisplay2 = document.getElementById("counterDisplay2");
-    const multiplierDisplay = document.getElementById("multiplierDisplay");
-    const multiplierDisplay2 = document.getElementById("multiplierDisplay2");
+    const counterDisplay = document.getElementById("counterDisplay"), counterDisplay2 = document.getElementById("counterDisplay2");
+    const multiplierDisplay = document.getElementById("multiplierDisplay"), multiplierDisplay2 = document.getElementById("multiplierDisplay2");
     const clickerBtn = document.getElementById("clickerBtn");
     const shopContainer = document.getElementById("shopContainer");
     const autoStatsText = document.getElementById("autoStatsText");
     const toggleAutoBtn = document.getElementById("toggleAutoBtn");
-    const openShopBtn = document.getElementById("openShopBtn");
-    const backToClickerBtn = document.getElementById("backToClickerBtn");
-    const resetBtn = document.getElementById("resetGameBtn");
-    const resetBtn2 = document.getElementById("resetGameBtn2");
-
-    let currentPage = 0;
-    let shopInitialized = false;
-
-    function switchPage(pageIndex) {
-        if (pageIndex === currentPage) return;
-        currentPage = pageIndex;
-        pagesContainer.style.transform = `translateX(-${pageIndex * 100}%)`;
-        if (pageIndex === 1 && !shopInitialized) {
-            renderShopWithAnimations();
-            shopInitialized = true;
-        } else if (pageIndex === 1 && shopInitialized) {
-            updateShopUIOnly();
-        }
+    const energyBar = document.getElementById("energyBar"), energyText = document.getElementById("energyText"), energyTimerSpan = document.getElementById("energyTimer");
+    const featuresGrid = document.getElementById("featuresGrid");
+    
+    let currentPage = 0, shopInitialized = false;
+    let currentRegenSpeed = 5000;
+    
+    function getMaxEnergy() { return BASE_MAX_ENERGY + maxEnergyBonus; }
+    function updateEnergyUI() {
+        let maxE = getMaxEnergy();
+        let percent = (currentEnergy / maxE) * 100;
+        energyBar.style.width = `${percent}%`;
+        energyBar.innerText = Math.floor(currentEnergy);
+        energyText.innerText = `${Math.floor(currentEnergy)}/${maxE}`;
+        clickerBtn.classList.toggle("disabled", !freezeActive && currentEnergy < 1);
     }
-
-    function updateShopUIOnly() {
-        const items = document.querySelectorAll('.shop-item');
-        for (let i = 0; i < items.length && i < shopItems.length; i++) {
-            const item = shopItems[i];
-            const currentPrice = getCurrentPrice(item);
-            const canAfford = totalPoints >= currentPrice;
-            const isMaxed = isItemMaxed(item);
-            
-            const limitBadge = items[i].querySelector('.limit-badge');
-            if (limitBadge) limitBadge.innerText = `${item.boughtCount}/${item.maxCount}`;
-            
-            const descSpan = items[i].querySelector('.item-desc');
-            if (descSpan) {
-                let effectText = "";
-                if (item.type === "power") {
-                    effectText = `+${item.value} | всего +${item.boughtCount * item.value} к силе`;
-                } else if (item.type === "multiplier") {
-                    effectText = `+${item.value} | сейчас ×${(1 + item.boughtCount * item.value).toFixed(1)}`;
-                } else if (item.type === "auto") {
-                    const realIncome = (item.boughtCount * item.value * globalMultiplier).toFixed(1);
-                    effectText = `+${item.value}/сек | доход ${realIncome}/сек`;
-                }
-                descSpan.innerText = `${item.desc} • ${effectText}`;
-            }
-            
-            const priceSpan = items[i].querySelector('.price');
-            const buyButton = items[i].querySelector('.buy-btn');
-            const existingMaxBadge = items[i].querySelector('.maxed-badge');
-            
-            if (!isMaxed) {
-                if (priceSpan) priceSpan.innerHTML = `${currentPrice} <small>🍪</small>`;
-                if (buyButton) {
-                    buyButton.disabled = !canAfford;
-                    if (!canAfford) buyButton.classList.add('disabled-btn');
-                    else buyButton.classList.remove('disabled-btn');
-                }
-                if (existingMaxBadge) existingMaxBadge.remove();
-            } else {
-                if (priceSpan) priceSpan.innerHTML = `— <small>MAX</small>`;
-                if (buyButton) buyButton.remove();
-                if (!existingMaxBadge) {
-                    const newMaxBadge = document.createElement("div");
-                    newMaxBadge.className = "maxed-badge";
-                    newMaxBadge.innerText = "✅ MAX";
-                    const actionDiv = items[i].querySelector('.price-action');
-                    if (actionDiv && !actionDiv.querySelector('.maxed-badge')) {
-                        actionDiv.appendChild(newMaxBadge);
-                    }
-                }
-            }
-        }
+    function addEnergy(amount) {
+        let maxE = getMaxEnergy();
+        let newE = Math.min(maxE, currentEnergy + amount);
+        if (newE !== currentEnergy) { currentEnergy = newE; updateEnergyUI(); saveGame(); }
     }
-
-    function recalcGlobalMultiplier() {
-        let totalMultBonus = 0;
-        for (let item of shopItems) {
-            if (item.type === "multiplier") {
-                totalMultBonus += item.boughtCount * item.value;
-            }
-        }
-        globalMultiplier = Math.max(0.1, 1 + totalMultBonus);
+    function spendEnergy() {
+        if (freezeActive) return true;
+        if (currentEnergy >= 1) { currentEnergy -= 1; updateEnergyUI(); return true; }
+        return false;
+    }
+    
+    function updateCritStats() {
+        const critItem = shopItems.find(i => i.id === "critical");
+        criticalChance = critItem ? critItem.boughtCount * critItem.value : 0;
+        const critDmgItem = shopItems.find(i => i.id === "crit_damage");
+        criticalDamage = 2 + (critDmgItem ? critDmgItem.boughtCount * critDmgItem.value : 0);
+        const autoCritItem = shopItems.find(i => i.id === "auto_crit");
+        autoCritEnabled = autoCritItem ? autoCritItem.boughtCount > 0 : false;
+        const doubleItem = shopItems.find(i => i.id === "double_income");
+        doubleChance = doubleItem ? doubleItem.boughtCount * doubleItem.value : 0;
+        const clickMultItem = shopItems.find(i => i.id === "click_mult");
+        clickPowerMultiplier = 1 + (clickMultItem ? clickMultItem.boughtCount * clickMultItem.value : 0);
+        const maxEnergyItem = shopItems.find(i => i.id === "max_energy");
+        maxEnergyBonus = maxEnergyItem ? maxEnergyItem.boughtCount * maxEnergyItem.value : 0;
+    }
+    
+    function recalcMultiplier() {
+        let bonus = 0;
+        for (let item of shopItems) if (item.type === "multiplier") bonus += item.boughtCount * item.value;
+        globalMultiplier = Math.max(0.1, 1 + bonus) * prestigeMultiplier;
         multiplierDisplay.innerText = globalMultiplier.toFixed(1);
         multiplierDisplay2.innerText = globalMultiplier.toFixed(1);
-        return globalMultiplier;
     }
-
-    function getAutoIncome() {
-        const autoItem = shopItems.find(i => i.type === "auto");
-        if (!autoItem) return 0;
-        return autoItem.boughtCount * autoItem.value;
+    
+    function recalcRegenSpeed() {
+        let regenBonus = 0;
+        const regenItem = shopItems.find(i => i.id === "energy_regen");
+        if (regenItem) regenBonus = regenItem.boughtCount * regenItem.value;
+        let speed = 5000 * (100 / (100 + regenBonus));
+        if (speed < 1500) speed = 1500;
+        currentRegenSpeed = speed;
+        setRegenSpeed();
     }
-
+    function setRegenSpeed() {
+        let speed = regenBoostActive ? 2500 : currentRegenSpeed;
+        energyTimerSpan.innerText = `+1/${Math.round(speed/1000)}c`;
+        if (energyRegenInterval) clearInterval(energyRegenInterval);
+        energyRegenInterval = setInterval(() => {
+            let maxE = getMaxEnergy();
+            if (currentEnergy < maxE) addEnergy(1);
+        }, speed);
+    }
+    
+    function getAutoBase() {
+        const auto = shopItems.find(i => i.id === "auto");
+        let base = auto ? auto.boughtCount * auto.value : 0;
+        if (autoBoostActive) base = base * 2;
+        return base;
+    }
+    function getAutoIntervalMs() {
+        let speedMult = 1;
+        const autoSpeedItem = shopItems.find(i => i.id === "auto_speed");
+        if (autoSpeedItem) speedMult = 1 - (autoSpeedItem.boughtCount * autoSpeedItem.value);
+        if (speedMult < 0.3) speedMult = 0.3;
+        return Math.floor(1000 * speedMult);
+    }
     function updateAutoUI() {
-        const autoCount = shopItems.find(i => i.type === "auto")?.boughtCount || 0;
-        const baseIncome = getAutoIncome();
-        const realIncome = baseIncome * globalMultiplier;
-        autoStatsText.innerHTML = `🤖 Автокликер: ${autoCount}/${MAX_ITEM_COUNT} шт. → ${realIncome.toFixed(1)} 🍪/сек (×${globalMultiplier.toFixed(1)})`;
-        
-        if (autoEnabled) {
-            toggleAutoBtn.innerText = "⏸️ ВЫКЛ";
-            toggleAutoBtn.classList.remove("off");
-        } else {
-            toggleAutoBtn.innerText = "▶️ ВКЛ";
-            toggleAutoBtn.classList.add("off");
-        }
+        let cnt = shopItems.find(i => i.id === "auto")?.boughtCount || 0;
+        let real = getAutoBase() * globalMultiplier;
+        autoStatsText.innerHTML = `🤖 Уровень ${cnt} → ${real.toFixed(1)}/сек`;
+        toggleAutoBtn.innerText = autoEnabled ? "⏸️ ВЫКЛ" : "▶️ ВКЛ";
+        toggleAutoBtn.classList.toggle("off", !autoEnabled);
     }
-
     function restartAutoTimer() {
         if (autoInterval) clearInterval(autoInterval);
         if (!autoEnabled) return;
-        
+        let intervalTime = getAutoIntervalMs();
         autoInterval = setInterval(() => {
-            const baseIncome = getAutoIncome();
-            if (baseIncome > 0 && autoEnabled) {
-                const gained = baseIncome * globalMultiplier;
-                if (gained > 0) {
-                    totalPoints += gained;
-                    updateCountersOnly();
-                    saveGameToLocal();
-                    showPassiveNotification(Math.floor(gained));
-                    if (currentPage === 1 && shopInitialized) {
-                        updateShopUIOnly();
-                    }
+            let base = getAutoBase();
+            if (base > 0) {
+                let gained = base * globalMultiplier;
+                if (autoCritEnabled && criticalChance > 0 && Math.random() * 100 < criticalChance) {
+                    gained = gained * criticalDamage;
+                    showFloating(`🤖 КРИТ! +${Math.floor(gained)}`, 75, 12);
+                } else {
+                    showFloating(`🤖 +${Math.floor(gained)}`, 75, 12);
                 }
+                totalPoints += gained;
+                updateCounters();
+                saveGame();
+                if (currentPage === 1 && shopInitialized) updateShopUI();
             }
-        }, 1000);
+        }, intervalTime);
     }
-
-    function toggleAuto() {
-        autoEnabled = !autoEnabled;
-        updateAutoUI();
-        restartAutoTimer();
-        if (!autoEnabled) {
-            triggerFloatingMessage("⏸️ Автокликер выключен", "#ffaa66");
-        } else {
-            triggerFloatingMessage("▶️ Автокликер включён", "#aaffaa");
+    function toggleAuto() { autoEnabled = !autoEnabled; updateAutoUI(); restartAutoTimer(); saveGame(); }
+    
+    // 9 функций
+    function activateEnergyBoost() {
+        if (!energyBoostAvailable) { showMsg(`⏳ ${Math.ceil(energyBoostCooldown/1000)}с`); return; }
+        addEnergy(50);
+        energyBoostAvailable = false;
+        energyBoostCooldown = 120000;
+        setTimeout(() => { energyBoostAvailable = true; showMsg("⚡ Энергозаряд готов!"); renderFeatures(); }, 120000);
+        showMsg("⚡ +50 энергии!");
+        renderFeatures(); saveGame();
+    }
+    function activateInstantBonus() {
+        if (!instantBonusAvailable) { showMsg(`⏳ ${Math.ceil(instantBonusCooldown/1000)}с`); return; }
+        let bonus = 150 + Math.floor(Math.random() * 250);
+        totalPoints += bonus;
+        instantBonusAvailable = false;
+        instantBonusCooldown = 180000;
+        setTimeout(() => { instantBonusAvailable = true; showMsg("🎁 Мгновенный бонус готов!"); renderFeatures(); }, 180000);
+        showMsg(`🎁 +${bonus} 🪙!`);
+        updateCounters(); renderFeatures(); saveGame();
+    }
+    function activateSuperClick() {
+        if (!superClickAvailable) { showMsg(`⏳ ${Math.ceil(superClickCooldown/1000)}с`); return; }
+        superClickActive = true;
+        superClickAvailable = false;
+        superClickCooldown = 60000;
+        setTimeout(() => { superClickAvailable = true; showMsg("💥 Супер-клик готов!"); renderFeatures(); }, 60000);
+        showMsg("💥 Следующий клик x5!");
+        renderFeatures(); saveGame();
+    }
+    function activateRegenBoost() {
+        if (!regenBoostAvailable) { showMsg(`⏳ ${Math.ceil(regenBoostCooldown/1000)}с`); return; }
+        regenBoostActive = true;
+        regenBoostAvailable = false;
+        regenBoostCooldown = 90000;
+        setRegenSpeed();
+        setTimeout(() => { regenBoostActive = false; setRegenSpeed(); showMsg("⏳ Ускорение регенерации закончилось"); }, 30000);
+        setTimeout(() => { regenBoostAvailable = true; showMsg("⚡ Ускорение регенерации готово!"); renderFeatures(); }, 90000);
+        showMsg("⚡ Ускорение регенерации на 30 сек!");
+        renderFeatures(); saveGame();
+    }
+    function activateFreeze() {
+        if (!freezeAvailable) { showMsg(`⏳ ${Math.ceil(freezeCooldown/1000)}с`); return; }
+        freezeActive = true;
+        freezeAvailable = false;
+        freezeCooldown = 60000;
+        setTimeout(() => { freezeActive = false; showMsg("❄️ Заморозка энергии закончилась"); }, 10000);
+        setTimeout(() => { freezeAvailable = true; showMsg("❄️ Заморозка энергии готова!"); renderFeatures(); }, 60000);
+        showMsg("❄️ Энергия не тратится 10 сек!");
+        renderFeatures(); saveGame();
+    }
+    function activateAutoBoost() {
+        if (!autoBoostAvailable) { showMsg(`⏳ ${Math.ceil(autoBoostCooldown/1000)}с`); return; }
+        autoBoostActive = true;
+        autoBoostAvailable = false;
+        autoBoostCooldown = 90000;
+        updateAutoUI(); restartAutoTimer();
+        setTimeout(() => { autoBoostActive = false; updateAutoUI(); restartAutoTimer(); showMsg("🤖 Усиление автокликера закончилось"); }, 30000);
+        setTimeout(() => { autoBoostAvailable = true; showMsg("🤖 Усиление автокликера готово!"); renderFeatures(); }, 90000);
+        showMsg("🤖 Автокликер x2 на 30 сек!");
+        renderFeatures(); saveGame();
+    }
+    function activateCollectBonus() {
+        if (!collectBonusAvailable) { showMsg(`⏳ ${Math.ceil(collectBonusCooldown/1000)}с`); return; }
+        totalPoints += 50;
+        collectBonusAvailable = false;
+        collectBonusCooldown = 45000;
+        setTimeout(() => { collectBonusAvailable = true; showMsg("💰 Сбор бонусов готов!"); renderFeatures(); }, 45000);
+        showMsg("💰 +50 очков!");
+        updateCounters(); renderFeatures(); saveGame();
+    }
+    function changeTheme() {
+        themeIndex = (themeIndex + 1) % themes.length;
+        let bgColor = "#0a0f1a";
+        if (themeIndex === 1) bgColor = "#f5e6d3";
+        else if (themeIndex === 2) bgColor = "#2d1f2a";
+        else if (themeIndex === 3) bgColor = "#1a1a3a";
+        document.body.style.background = `linear-gradient(145deg, ${bgColor} 0%, #0f1824 100%)`;
+        showMsg(`🎨 Тема: ${themes[themeIndex]}`);
+        saveGame(); renderFeatures();
+    }
+    function prestige() {
+        if (totalPoints < 10000) { showMsg("Нужно 10000 очков для престижа!"); return; }
+        if (confirm("Престиж сбросит очки и улучшения, но даст +5% к множителю навсегда!")) {
+            prestigeMultiplier += 0.05;
+            totalPoints = 0; clickPower = 1; currentEnergy = BASE_MAX_ENERGY;
+            for (let item of shopItems) item.boughtCount = 0;
+            updateCritStats(); recalcMultiplier(); recalcRegenSpeed(); updateAutoUI(); updateEnergyUI(); restartAutoTimer(); updateCounters();
+            if (currentPage === 1 && shopInitialized) updateShopUI();
+            saveGame(); showMsg(`🌟 Престиж! Множитель x${prestigeMultiplier.toFixed(2)}`);
+            renderFeatures();
         }
-        saveGameToLocal();
-    }
-
-    function showPassiveNotification(income) {
-        const notif = document.createElement("div");
-        notif.className = "float-number";
-        notif.innerText = `🤖 +${income}`;
-        notif.style.left = "70%";
-        notif.style.top = "12%";
-        notif.style.fontSize = "1rem";
-        document.body.appendChild(notif);
-        setTimeout(() => notif.remove(), 700);
-    }
-
-    function getCurrentPrice(item) {
-        return Math.max(1, Math.floor(item.basePrice * Math.pow(item.priceScale, item.boughtCount)));
     }
     
-    function isItemMaxed(item) {
-        return item.boughtCount >= item.maxCount;
-    }
-
-    function purchaseItem(itemId) {
-        const item = shopItems.find(i => i.id === itemId);
-        if (!item) return;
-        if (item.boughtCount >= item.maxCount) {
-            triggerFloatingMessage(`❌ Лимит ${item.maxCount} шт.`, "#ff8866");
-            return;
-        }
-        const price = getCurrentPrice(item);
-        if (totalPoints >= price) {
-            totalPoints -= price;
-            item.boughtCount += 1;
-            
-            if (item.type === "power") clickPower += item.value;
-            else if (item.type === "multiplier") recalcGlobalMultiplier();
-            else if (item.type === "auto") updateAutoUI();
-            
-            recalcGlobalMultiplier();
-            updateAutoUI();
-            updateCountersOnly();
-            
-            if (currentPage === 1 && shopInitialized) updateShopUIOnly();
-            
-            saveGameToLocal();
-            triggerFloatingMessage(`✔ ${item.name.split(' ')[0]} (${item.boughtCount}/${item.maxCount})`, "#b5e0a0");
-        } else {
-            triggerFloatingMessage("😭 Не хватает очков!", "#ffaa66");
-        }
-    }
-
-    function handleClick() {
-        let earned = Math.floor(clickPower * globalMultiplier);
+    function clickHandler() {
+        let canClick = freezeActive ? true : (currentEnergy >= 1);
+        if (!canClick) { showMsg("Нет энергии!"); return; }
+        if (!freezeActive) { currentEnergy -= 1; updateEnergyUI(); }
+        let earned = Math.floor(clickPower * globalMultiplier * clickPowerMultiplier);
+        let isCrit = false, isDouble = false;
+        if (criticalChance > 0 && Math.random() * 100 < criticalChance) { earned = Math.floor(earned * criticalDamage); isCrit = true; }
+        if (doubleChance > 0 && Math.random() * 100 < doubleChance) { earned = earned * 2; isDouble = true; }
+        if (superClickActive) { earned = earned * 5; superClickActive = false; showMsg("💥 Супер-клик x5!"); }
+        let now = Date.now();
+        if (now - lastClickTime < COMBO_WINDOW) comboCount = Math.min(comboCount + 1, 30);
+        else comboCount = 1;
+        lastClickTime = now;
+        let comboBonus = 1 + (comboCount / 100);
+        earned = Math.floor(earned * comboBonus);
         if (earned < 1) earned = 1;
         totalPoints += earned;
-        
-        const rect = clickerBtn.getBoundingClientRect();
-        showFloatingNumber(`+${earned}`, rect.left + rect.width/2, rect.top + rect.height/2);
-        
-        updateCountersOnly();
-        if (currentPage === 1 && shopInitialized) updateShopUIOnly();
-        saveGameToLocal();
-    }
-
-    function showFloatingNumber(text, x, y) {
-        const el = document.createElement("div");
-        el.className = "float-number";
-        el.innerText = text;
-        el.style.left = `${x - 25}px`;
-        el.style.top = `${y - 30}px`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 600);
+        let floatText = `+${earned}`;
+        if (isCrit) floatText = `💥 КРИТ! +${earned}`;
+        if (isDouble) floatText = `🍀 ДВОЙНОЙ! +${earned}`;
+        if (comboCount > 1 && !isCrit && !isDouble) floatText += ` (x${comboBonus.toFixed(2)})`;
+        let rect = clickerBtn.getBoundingClientRect();
+        showFloating(floatText, rect.left + rect.width/2 - 25, rect.top + rect.height/2 - 30);
+        updateCounters();
+        if (currentPage === 1 && shopInitialized) updateShopUI();
+        saveGame();
     }
     
-    function triggerFloatingMessage(msg, color = "#ffbd6e") {
-        const div = document.createElement("div");
-        div.className = "float-number";
-        div.innerText = msg;
-        div.style.left = "50%";
-        div.style.top = "45%";
-        div.style.transform = "translateX(-50%)";
-        div.style.fontSize = "1rem";
-        div.style.color = color;
-        document.body.appendChild(div);
-        setTimeout(() => div.remove(), 900);
+    function renderFeatures() {
+        featuresGrid.innerHTML = `
+            <div class="feature-card" onclick="activateEnergyBoost()"><div class="feature-icon">⚡</div><div class="feature-name">Энергозаряд</div><div class="feature-value">+50 энергии</div><div class="feature-cooldown">${energyBoostAvailable ? "✅" : "⏳ 2м"}</div></div>
+            <div class="feature-card" onclick="activateInstantBonus()"><div class="feature-icon">🎁</div><div class="feature-name">Мгнов. бонус</div><div class="feature-value">+150-400🍪</div><div class="feature-cooldown">${instantBonusAvailable ? "✅" : "⏳ 3м"}</div></div>
+            <div class="feature-card" onclick="activateSuperClick()"><div class="feature-icon">💥</div><div class="feature-name">Супер-клик</div><div class="feature-value">x5 на след.</div><div class="feature-cooldown">${superClickAvailable ? "✅" : "⏳ 1м"}</div></div>
+            <div class="feature-card" onclick="activateRegenBoost()"><div class="feature-icon">⚡⚡</div><div class="feature-name">Ускор. реген.</div><div class="feature-value">x2 на 30с</div><div class="feature-cooldown">${regenBoostAvailable ? "✅" : "⏳ 1.5м"}</div></div>
+            <div class="feature-card" onclick="activateFreeze()"><div class="feature-icon">❄️</div><div class="feature-name">Заморозка</div><div class="feature-value">энергия беспл.</div><div class="feature-cooldown">${freezeAvailable ? "✅" : "⏳ 1м"}</div></div>
+            <div class="feature-card" onclick="activateAutoBoost()"><div class="feature-icon">🤖⚡</div><div class="feature-name">Усиление авто</div><div class="feature-value">x2 на 30с</div><div class="feature-cooldown">${autoBoostAvailable ? "✅" : "⏳ 1.5м"}</div></div>
+            <div class="feature-card" onclick="activateCollectBonus()"><div class="feature-icon">💰</div><div class="feature-name">Сбор бонусов</div><div class="feature-value">+50 очков</div><div class="feature-cooldown">${collectBonusAvailable ? "✅" : "⏳ 45с"}</div></div>
+            <div class="feature-card" onclick="changeTheme()"><div class="feature-icon">🎨</div><div class="feature-name">Смена темы</div><div class="feature-value">${themes[themeIndex]}</div><div class="feature-cooldown"></div></div>
+            <div class="feature-card"><div class="feature-icon">🔥</div><div class="feature-name">Комбо</div><div class="feature-value">x${(1 + comboCount/100).toFixed(2)}</div><div class="feature-cooldown">${comboCount}/30</div></div>
+        `;
     }
-
-    function updateCountersOnly() {
-        const val = Math.floor(totalPoints);
-        counterDisplay.innerText = val;
-        counterDisplay2.innerText = val;
-        multiplierDisplay.innerText = globalMultiplier.toFixed(1);
-        multiplierDisplay2.innerText = globalMultiplier.toFixed(1);
+    
+    function getPrice(item) { return Math.max(1, Math.floor(item.basePrice * Math.pow(item.priceScale, item.boughtCount))); }
+    function purchaseItem(id) {
+        const item = shopItems.find(i => i.id === id);
+        if (!item || item.boughtCount >= item.maxCount) { showMsg("❌ Лимит"); return; }
+        let price = getPrice(item);
+        if (totalPoints >= price) {
+            totalPoints -= price;
+            item.boughtCount++;
+            if (item.type === "power") clickPower += item.value;
+            else if (item.type === "multiplier") recalcMultiplier();
+            if (item.id === "critical" || item.id === "crit_damage" || item.id === "auto_crit" || item.id === "double_income" || item.id === "click_mult" || item.id === "max_energy") updateCritStats();
+            if (item.id === "energy_regen") recalcRegenSpeed();
+            if (item.id === "auto_speed") restartAutoTimer();
+            if (item.id === "auto") updateAutoUI();
+            recalcMultiplier(); updateAutoUI(); if (item.id === "auto_speed") restartAutoTimer();
+            updateCounters();
+            if (currentPage === 1 && shopInitialized) updateShopUI();
+            saveGame(); showMsg(`✔ ${item.name} (${item.boughtCount}/${item.maxCount})`);
+            renderFeatures();
+        } else showMsg("😭 Не хватает!");
     }
-
-    function renderShopWithAnimations() {
+    function updateShopUI() {
+        let items = document.querySelectorAll('.shop-item');
+        for (let i=0; i<items.length && i<shopItems.length; i++) {
+            let it = shopItems[i];
+            let price = getPrice(it), canAff = totalPoints >= price, maxed = it.boughtCount >= it.maxCount;
+            let limitSpan = items[i].querySelector('.limit-badge');
+            if (limitSpan) limitSpan.innerText = `${it.boughtCount}/${it.maxCount}`;
+            let priceSpan = items[i].querySelector('.price');
+            let buyBtn = items[i].querySelector('.buy-btn');
+            if (!maxed) { if (priceSpan) priceSpan.innerHTML = `${price} 🍪`; if (buyBtn) buyBtn.disabled = !canAff; }
+            else { if (priceSpan) priceSpan.innerHTML = `— MAX`; if (buyBtn) buyBtn.disabled = true; }
+        }
+    }
+    function renderShop() {
         if (!shopContainer) return;
         shopContainer.innerHTML = "";
-        for (let i = 0; i < shopItems.length; i++) {
-            const item = shopItems[i];
-            const currentPrice = getCurrentPrice(item);
-            const canAfford = totalPoints >= currentPrice;
-            const isMaxed = isItemMaxed(item);
-            
-            const div = document.createElement("div");
-            div.className = "shop-item";
-            div.style.animationDelay = `${i * 0.05}s`;
-            
-            const infoDiv = document.createElement("div");
-            infoDiv.className = "item-info";
-            
-            const nameSpan = document.createElement("div");
-            nameSpan.className = "item-name";
-            const limitSpan = document.createElement("span");
-            limitSpan.className = "limit-badge";
-            limitSpan.innerText = `${item.boughtCount}/${item.maxCount}`;
-            nameSpan.innerHTML = `${item.name} `;
-            nameSpan.appendChild(limitSpan);
-            
-            const descSpan = document.createElement("div");
-            descSpan.className = "item-desc";
-            let effect = "";
-            if (item.type === "power") effect = `+${item.value} | всего +${item.boughtCount * item.value} к силе`;
-            else if (item.type === "multiplier") effect = `+${item.value} | сейчас ×${(1 + item.boughtCount * item.value).toFixed(1)}`;
-            else if (item.type === "auto") effect = `+${item.value}/сек | доход ${(item.boughtCount * item.value * globalMultiplier).toFixed(1)}/сек`;
-            descSpan.innerText = `${item.desc} • ${effect}`;
-            
-            infoDiv.appendChild(nameSpan);
-            infoDiv.appendChild(descSpan);
-            
-            const actionDiv = document.createElement("div");
-            actionDiv.className = "price-action";
-            const priceSpan = document.createElement("span");
-            priceSpan.className = "price";
-            
-            if (!isMaxed) {
-                priceSpan.innerHTML = `${currentPrice} <small>🍪</small>`;
-                const buyBtn = document.createElement("button");
-                buyBtn.innerText = "Купить";
-                buyBtn.className = "buy-btn";
-                if (!canAfford) {
-                    buyBtn.disabled = true;
-                    buyBtn.classList.add("disabled-btn");
-                }
-                buyBtn.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    purchaseItem(item.id);
-                });
-                actionDiv.appendChild(priceSpan);
-                actionDiv.appendChild(buyBtn);
-            } else {
-                priceSpan.innerHTML = `— <small>MAX</small>`;
-                const maxSpan = document.createElement("div");
-                maxSpan.className = "maxed-badge";
-                maxSpan.innerText = "✅ MAX";
-                actionDiv.appendChild(priceSpan);
-                actionDiv.appendChild(maxSpan);
-            }
-            
-            div.appendChild(infoDiv);
-            div.appendChild(actionDiv);
+        for (let it of shopItems) {
+            let price = getPrice(it), canAff = totalPoints >= price, maxed = it.boughtCount >= it.maxCount;
+            let div = document.createElement("div"); div.className = "shop-item";
+            div.innerHTML = `<div class="item-info"><div class="item-name">${it.name} <span class="limit-badge">${it.boughtCount}/${it.maxCount}</span></div><div class="item-desc">${it.desc}</div></div><div class="price-action"><span class="price">${!maxed ? price + ' 🍪' : '— MAX'}</span>${!maxed ? `<button class="buy-btn">Купить</button>` : ''}</div>`;
+            if (!maxed) { let btn = div.querySelector('.buy-btn'); if (btn) { if (!canAff) btn.disabled = true; btn.addEventListener("click", (e) => { e.stopPropagation(); purchaseItem(it.id); }); } }
             shopContainer.appendChild(div);
         }
     }
-
+    
+    function updateCounters() { let v = Math.floor(totalPoints); counterDisplay.innerText = v; counterDisplay2.innerText = v; }
+    function showMsg(msg) { let el = document.createElement("div"); el.className = "float-number"; el.innerText = msg; el.style.left = "50%"; el.style.top = "45%"; el.style.transform = "translateX(-50%)"; document.body.appendChild(el); setTimeout(() => el.remove(), 800); }
+    function showFloating(msg, x, y) { let el = document.createElement("div"); el.className = "float-number"; el.innerText = msg; el.style.left = `${x-30}px`; el.style.top = `${y-30}px`; document.body.appendChild(el); setTimeout(() => el.remove(), 600); }
+    function switchPage(idx) { if(idx===currentPage) return; currentPage=idx; pagesContainer.style.transform=`translateX(-${idx*100}%)`; if(idx===1 && !shopInitialized) { renderShop(); shopInitialized=true; } else if(idx===1 && shopInitialized) updateShopUI(); }
     function resetGame() {
-        if (confirm("Сбросить весь прогресс? Очки и все улучшения будут удалены.")) {
-            totalPoints = 0;
-            clickPower = 1;
-            autoEnabled = true;
-            for (let item of shopItems) {
-                item.boughtCount = 0;
-            }
-            recalcGlobalMultiplier();
-            updateAutoUI();
-            restartAutoTimer();
-            updateCountersOnly();
-            shopInitialized = false;
-            renderShopWithAnimations();
-            shopInitialized = true;
-            saveGameToLocal();
-            triggerFloatingMessage("✨ Игра перезапущена", "#ffd966");
-            if (currentPage === 1) switchPage(0);
+        if(confirm("Сбросить весь прогресс?")) {
+            totalPoints=0; clickPower=1; autoEnabled=true; currentEnergy=BASE_MAX_ENERGY; prestigeMultiplier=1; comboCount=0;
+            for(let item of shopItems) item.boughtCount=0;
+            updateCritStats(); recalcMultiplier(); recalcRegenSpeed(); updateAutoUI(); updateEnergyUI(); restartAutoTimer(); updateCounters();
+            shopInitialized=false; renderShop(); shopInitialized=true;
+            saveGame(); showMsg("✨ Сброс выполнен"); renderFeatures();
+            if(currentPage===1) switchPage(0);
         }
     }
-
-    function saveGameToLocal() {
-        const saveData = {
-            points: totalPoints,
-            clickPower: clickPower,
-            autoEnabled: autoEnabled,
-            shopItems: shopItems.map(item => ({ id: item.id, boughtCount: item.boughtCount }))
-        };
-        localStorage.setItem("clickerGameSave", JSON.stringify(saveData));
-    }
-
-    function loadGameFromLocal() {
-        const raw = localStorage.getItem("clickerGameSave");
-        if (!raw) return false;
+    function saveGame() { localStorage.setItem("clickerFinalSave", JSON.stringify({ points: totalPoints, power: clickPower, autoEnabled, energy: currentEnergy, prestigeMultiplier, themeIndex, comboCount, shopItems: shopItems.map(i=>({id:i.id, count:i.boughtCount})) })); }
+    function loadGame() {
+        let raw = localStorage.getItem("clickerFinalSave");
+        if(!raw) return false;
         try {
-            const data = JSON.parse(raw);
-            totalPoints = data.points || 0;
-            clickPower = data.clickPower || 1;
-            autoEnabled = data.autoEnabled !== undefined ? data.autoEnabled : true;
-            if (data.shopItems) {
-                for (let saved of data.shopItems) {
-                    const target = shopItems.find(i => i.id === saved.id);
-                    if (target && saved.boughtCount <= target.maxCount) {
-                        target.boughtCount = saved.boughtCount;
-                    }
-                }
-            }
-            recalcGlobalMultiplier();
-            updateAutoUI();
-            restartAutoTimer();
-            updateCountersOnly();
-            return true;
-        } catch(e) { return false; }
+            let data = JSON.parse(raw);
+            totalPoints = data.points||0; clickPower = data.power||1; autoEnabled = data.autoEnabled!==undefined?data.autoEnabled:true;
+            currentEnergy = data.energy!==undefined?data.energy:BASE_MAX_ENERGY; prestigeMultiplier = data.prestigeMultiplier||1;
+            themeIndex = data.themeIndex||0; comboCount = data.comboCount||0;
+            if(data.shopItems) for(let s of data.shopItems) { let t=shopItems.find(i=>i.id===s.id); if(t) t.boughtCount=s.count; }
+            updateCritStats(); recalcMultiplier(); recalcRegenSpeed(); updateAutoUI(); updateEnergyUI(); restartAutoTimer(); updateCounters(); renderFeatures();
+            changeTheme(); return true;
+        } catch(e){return false;}
     }
-
-    function initGame() {
-        loadGameFromLocal();
-        recalcGlobalMultiplier();
-        updateAutoUI();
-        updateCountersOnly();
-        
-        clickerBtn.addEventListener("click", handleClick);
-        clickerBtn.addEventListener("touchstart", (e) => { e.preventDefault(); handleClick(); });
+    
+    window.activateEnergyBoost = activateEnergyBoost;
+    window.activateInstantBonus = activateInstantBonus;
+    window.activateSuperClick = activateSuperClick;
+    window.activateRegenBoost = activateRegenBoost;
+    window.activateFreeze = activateFreeze;
+    window.activateAutoBoost = activateAutoBoost;
+    window.activateCollectBonus = activateCollectBonus;
+    window.changeTheme = changeTheme;
+    
+    function init() {
+        loadGame();
+        setRegenSpeed();
+        updateCritStats(); recalcMultiplier(); updateAutoUI(); updateEnergyUI(); updateCounters(); renderFeatures();
+        clickerBtn.addEventListener("click", clickHandler);
+        clickerBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); clickHandler(); });
         toggleAutoBtn.addEventListener("click", toggleAuto);
-        openShopBtn.addEventListener("click", () => switchPage(1));
-        backToClickerBtn.addEventListener("click", () => switchPage(0));
+        openShopBtn.addEventListener("click", ()=>switchPage(1));
+        backToClickerBtn.addEventListener("click", ()=>switchPage(0));
         resetBtn.addEventListener("click", resetGame);
-        resetBtn2.addEventListener("click", resetGame);
+        prestigeBtn.addEventListener("click", prestige);
+        setInterval(() => { renderFeatures(); saveGame(); }, 1000);
     }
-
-    initGame();
+    init();
 </script>
 </body>
 </html>
